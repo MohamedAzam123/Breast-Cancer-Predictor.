@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+import os
 
 
 st.set_page_config(page_title="توقع سرطان الثدي", layout="wide")
@@ -10,7 +11,9 @@ st.set_page_config(page_title="توقع سرطان الثدي", layout="wide")
 @st.cache_resource
 def train_and_get_mappings():
     
-    df = pd.read_csv('Breast_Cancer.csv')
+    
+    file_path = os.path.join(os.getcwd(), 'Breast_Cancer.csv')
+    df = pd.read_csv(file_path)
     
  
     mappings = {}
