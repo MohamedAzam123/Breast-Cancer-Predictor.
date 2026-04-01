@@ -4,15 +4,15 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
-# إعداد الصفحة
+
 st.set_page_config(page_title="توقع سرطان الثدي", layout="wide")
 
 @st.cache_resource
 def train_and_get_mappings():
-    # تحميل الداتا الأصلية عشان نعرف الكلمات المقابلة للأرقام
+    
     df = pd.read_csv('Breast_Cancer.csv')
     
-    # تحويل الداتا وحفظ القواميس
+ 
     mappings = {}
     for col in df.select_dtypes(include=['object']).columns:
         if col != 'Status':
@@ -48,22 +48,22 @@ if model:
     for i, col in enumerate(col_order):
         with col1 if i % 2 == 0 else col2:
             if col in num_cols:
-                # خانة إدخال أرقام
+               
                 inputs[col] = st.number_input(f"{col} (رقمي)", value=0)
             else:
-                # قائمة منسدلة بكلمات واضحة بدلاً من أرقام
+                
                 options_dict = mappings[col]
-                # اليوزر بيختار الكلمة، والـ index بيبقى هو الرقم اللي الموديل عايزه
+                
                 display_label = st.selectbox(f"{col} (اختر الحالة)", list(options_dict.values()))
-                # تحويل الكلمة المختارة لرقمها المقابل
+                
                 inputs[col] = [k for k, v in options_dict.items() if v == display_label][0]
 
     if st.button("🚀 بدء التحليل الطبي"):
         input_df = pd.DataFrame([inputs])
-        # تحجيم الأرقام
+        
         input_df[num_cols] = scaler.transform(input_df[num_cols])
         
-        # التوقع
+        
         prediction = model.predict(input_df)
         prob = model.predict_proba(input_df)
         
